@@ -4,6 +4,11 @@ import { startStandaloneServer } from '@apollo/server/standalone';
 
 dotenv.config();
 
+import db from './db.js';
+
+const port = process.env.PORT || 4000;
+const DB_HOST = process.env.DB_HOST;
+
 let notes = [
     { id: '1', content: 'This is a note', author: 'IceMan4U' },
     { id: '2', content: 'This is an another note', author: 'Adam Scott' },
@@ -49,7 +54,9 @@ const resolvers = {
     }
 };
 
-const port = process.env.PORT || 4000;
+// MongoDB에 연결
+db.connect(DB_HOST)
+
 const path = '/api'
 
 // 아폴로 서버 설정
