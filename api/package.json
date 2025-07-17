@@ -4,7 +4,7 @@
   "description": "API code examples for JavaScript Everywhere by Adam Scott, published by O'Reilly Media",
   "main": "src/index.js",
   "type": "module",
-    "scripts": {
+  "scripts": {
     "start": "nodemon src/index.js",
     "dev": "nodemon src/index.js",
     "final": "nodemon final/index.js",
@@ -18,6 +18,7 @@
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
     "graphql": "^16.11.0",
+    "graphql-tag": "^2.12.6",
     "mongoose": "^8.16.3"
   }
 }

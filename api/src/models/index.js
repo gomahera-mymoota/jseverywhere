@@ -1,7 +1,12 @@
 import Note from './note.js';
 
-const models = {
+export default {
     Note
-};
+}
 
-export default models;
+// 혹은
+// const models = {
+//     Note
+// };
+
+// export default models;
