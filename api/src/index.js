@@ -11,8 +11,9 @@ dotenv.config();
 // const db = require('./db');
 // require('dotenv').config();
 
-const port = process.env.PORT || 4000;
 const DB_HOST = process.env.DB_HOST;
+const port = process.env.PORT || 4000;
+const path = '/api'
 
 let notes = [
     { id: '1', content: 'This is a note', author: 'IceMan4U' },
@@ -61,8 +62,6 @@ const resolvers = {
 
 // MongoDB에 연결
 db.connect(DB_HOST)
-
-const path = '/api'
 
 // 아폴로 서버 설정
 const server = new ApolloServer({
