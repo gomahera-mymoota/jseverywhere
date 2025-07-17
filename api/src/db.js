@@ -1,12 +1,15 @@
+// ES6
 import mongoose from 'mongoose';
 
+// CommonJS
+// const mongoose = require('mongoose');
+
+// CommonJS
 // module.exports = {
+    
+// ES6
 export default {
     connect: DB_HOST => {
-        // mongoose.set('useNewUrlParser', true);
-        // mongoose.set('useFindAndModify', false);
-        // mongoose.set('useCreateIndex', true);
-        // mongoose.set('useUnifiedTopology', true);
         mongoose.set('strictQuery', true);
 
         mongoose.connect(DB_HOST);

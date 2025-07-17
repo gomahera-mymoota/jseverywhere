@@ -1,10 +1,15 @@
+// ES6
 import dotenv from 'dotenv';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-
+import db from './db.js';
 dotenv.config();
 
-import db from './db.js';
+// CommonJS
+// const { ApolloServer } = require('@apollo/server');
+// const { startStandaloneServer } = require('@apollo/server/standalone');
+// const db = require('./db');
+// require('dotenv').config();
 
 const port = process.env.PORT || 4000;
 const DB_HOST = process.env.DB_HOST;
