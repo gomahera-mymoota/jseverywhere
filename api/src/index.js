@@ -1,9 +1,9 @@
 // ES6
-import dotenv from 'dotenv';
+import 'dotenv/config'
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import db from './db.js';
-dotenv.config();
+import models from './models/index.js';
 
 // CommonJS
 // const { ApolloServer } = require('@apollo/server');
@@ -44,19 +44,16 @@ const typeDefs = `
 const resolvers = {
     Query: {
         hello: () => 'Hello World!~',
-        notes: () => notes,
-        note: (parent, args) => notes.find(note => note.id === args.id),
+        notes: async () => {
+            return await models.Note.find();
+        },
+        note: async (parent, args) => await models.Note.findById(args.id),
     },
     Mutation: {
-        newNote: (parent, args) => {
-            let noteValue = {
-                id: String(notes.length + 1),
-                content: args.content,
-                author: 'IceMan4U'
-            };
-            notes.push(noteValue);
-            return noteValue;
-        }        
+        newNote: async (parent, args) => await models.Note.create({
+            content: args.content,
+            author: 'IceMan4U'
+        })
     }
 };
 
@@ -70,6 +67,7 @@ const server = new ApolloServer({
 });
 
 const url = startStandaloneServer(server, {
+
     listen: { port, path },
 });
 
