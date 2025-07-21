@@ -1,11 +1,9 @@
 import Query from './query.js';
 import Mutation from './mutation.js';
-import gid from 'graphql-iso-date';
-
-const { GraphQLDateTime } = gid;
+import { DateTimeResolver } from 'graphql-scalars';
 
 export default {
     Query,
     Mutation,
-    DateTime: GraphQLDateTime
+    DateTime: DateTimeResolver
 }
