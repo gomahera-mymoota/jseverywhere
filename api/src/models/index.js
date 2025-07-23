@@ -1,12 +1,7 @@
 import Note from './note.js';
+import User from './user.js';
 
 export default {
-    Note
+    Note,
+    User
 }
-
-// 혹은
-// const models = {
-//     Note
-// };
-
-// export default models;
