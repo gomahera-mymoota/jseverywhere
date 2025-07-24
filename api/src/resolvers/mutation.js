@@ -51,4 +51,32 @@ export default {
             throw new Error('Error: creating account');
         }
     },
+    signIn: async (parent, { username, email, password }, { models }) => {
+        if (email) {
+            email = email.trim().toLowerCase();
+        }
+        
+        const user = await models.User.findOne({
+            $or: [{ email }, { username }]
+        });
+
+        if (!user) {
+            throw new GraphQLError('Error: signing in', {
+                extensions: {
+                    code: 'UNAUTHENTICATED',
+                },
+            });
+        }
+
+        const valid = await bcrypt.compare(password, user.password);
+        if (!valid) {
+            throw new GraphQLError('Error: signing in', {
+                extensions: {
+                    code: 'UNAUTHENTICATED',
+                },
+            });
+        }
+        
+        return jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    }
 }
