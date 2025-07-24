@@ -1,5 +1,4 @@
-import { trusted } from "mongoose";
-import mongoose from mongoose;
+import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -8,16 +7,16 @@ const userSchema = new mongoose.Schema({
         index: { unique: true }
     },
     email: {
-        String,
+        type: String,
         required: true,
         index: { unique: true }
     },
     password: {
-        String,
+        type: String,
         required: true
     },
     avatar: {
-        String
+        type: String
     }
 },
 {

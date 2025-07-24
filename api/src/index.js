@@ -20,9 +20,6 @@ const server = new ApolloServer({
     resolvers
 });
 
-// console.log('models: ', models);
-// console.log('{ models }: ', { models });
-
 const url = startStandaloneServer(server, {
     context: () => ({ models }),
     listen: { port, path },
