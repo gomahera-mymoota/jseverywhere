@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { GraphQLError } from 'graphql';
 import 'dotenv/config';
 import gravatar from '../util/gravatar.js';
+import mongoose from 'mongoose';
 
 // 상수 정의 [Gemini]
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -22,10 +23,16 @@ const throwAuthError = (msg = 'Authentication failed') => {
 };
 
 export default { 
-    newNote: async (parent, args, { models }) => await models.Note.create({
-        content: args.content,
-        author: 'IceMan4U'
-    }),
+    newNote: async (parent, args, { models, user }) => {
+        if (!user) {
+            throwAuthError('노트를 생성하려면 로그인해야 합니다.')
+        }
+
+        return await models.Note.create({
+            content: args.content,
+            author: user.id
+        });
+    },
 
     deleteNote: async (parent, { id }, { models }) => {
         try {
