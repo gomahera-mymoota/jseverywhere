@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken';
 import { GraphQLError } from 'graphql';
 import 'dotenv/config';
 import gravatar from '../util/gravatar.js';
-import mongoose from 'mongoose';
 
 // 상수 정의 [Gemini]
 const JWT_SECRET = process.env.JWT_SECRET;
