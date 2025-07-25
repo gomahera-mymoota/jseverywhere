@@ -15,7 +15,7 @@ export default gql`
     id: ID!,
     username: String!,
     email: String!,
-    avatar: String,
+    avatarUrl: String,
     note: [Note!]!
   }
 

@@ -22,10 +22,19 @@ const throwAuthError = (msg = 'Authentication failed') => {
     });
 };
 
+const throwForbiddenError = (msg = 'Request failed') => {
+    throw new GraphQLError(msg, {
+        extensions: {
+            code: 'FORBIDDEN',
+            http: { status: 403 }
+        },
+    });
+};
+
 export default { 
     newNote: async (parent, args, { models, user }) => {
         if (!user) {
-            throwAuthError('노트를 생성하려면 로그인해야 합니다.')
+            throwAuthError('노트를 생성하려면 로그인해야 합니다.');
         }
 
         return await models.Note.create({
@@ -34,33 +43,45 @@ export default {
         });
     },
 
-    deleteNote: async (parent, { id }, { models }) => {
+    deleteNote: async (parent, { id }, { models, user }) => {
+        if (!user) {
+            throwAuthError('노트를 삭제하려면 로그인해야 합니다.');
+        }
+
+        const note = await models.Note.findById(id);
+
+        if (note && String(note.author) !== user.id) {
+            throwForbiddenError('자신의 노트만 삭제할 수 있습니다.');
+        }
+
         try {
-            const result = await models.Note.findOneAndDelete({ _id: id });
-            return result.deletedCount === 1;
+            await note.deleteOne();
+            return true;
+            // const result = await models.Note.findOneAndDelete({ _id: id });
+            // return result.deletedCount === 1;
         } catch (err) {
             console.error('노트 삭제 중 오류 발생: ', err);
             throw new GraphQLError('노트 삭제 중 오류가 발생했습니다.');
         }
     },
 
-    updateNote: async (parent, { content, id }, { models }) => {
+    updateNote: async (parent, { content, id }, { models, user }) => {
+        if (!user) {
+            throwAuthError('노트를 수정하려면 로그인해야 합니다.');
+        }
+
+        const note = await models.Note.findById(id);
+
+        if (note && String(note.author) !== user.id) {
+            throwForbiddenError('자신의 노트만 수정할 수 있습니다.');
+        }
+        
         try {
-            const updatedNote = await models.Note.findOneAndUpdate(
+            return await models.Note.findOneAndUpdate(
                 { _id: id },
                 { $set: { content } },
                 { new: true }
             );
-            if (!updateNote) {
-                throw new GraphQLError('노트를 찾을 수 없거나 업데이트 권한이 없습니다.', {
-                    extensions: {
-                        code: 'NOT_FOUND',
-                        http: { status : 404 }
-                    }
-                });
-            }
-
-            return updatedNote;
         } catch (err) {
             console.error('노트 업데이트 중 오류 발생: ', err);
             throw new GraphQLError('노트 업데이트 중 오류가 발생했습니다.');
